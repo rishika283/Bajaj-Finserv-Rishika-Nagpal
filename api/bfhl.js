@@ -64,4 +64,4 @@ app.post("/api/bfhl", (req, res) => {
     });
 });
 
-module.exports=router;
+module.exports=app;
