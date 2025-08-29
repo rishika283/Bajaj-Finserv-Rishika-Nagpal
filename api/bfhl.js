@@ -1,52 +1,53 @@
-const app = require('express')();
-app.use(require('express').json());
+export default function handler(req, res) {
+    if (req.method !== "POST") {
+        return res.status(405).json({
+            is_success: "false",
+            message: "Method not allowed"
+        });
+    }
 
-app.post("/api/bfhl", (req, res) => {
     const input = req.body.array;
-    if (!Array.isArray(input)){
+    if (!Array.isArray(input)) {
         return res.status(400).json({
             is_success: "false",
             message: "Input must be an array"
         });
     }
-    let even=[];
-    let odd=[];
-    let alphabets=[];
-    let upperAlphabets=[];
-    let special=[];
-    let sum=0;
 
-    for (let i=0; i<input.length; i++){
-        let elem=input[i];
-        if (!isNaN(elem)){
-            if (Number(elem)%2===0){
+    let even = [];
+    let odd = [];
+    let alphabets = [];
+    let upperAlphabets = [];
+    let special = [];
+    let sum = 0;
+
+    for (let i = 0; i < input.length; i++) {
+        let elem = input[i];
+        if (!isNaN(elem)) {
+            if (Number(elem) % 2 === 0) {
                 even.push(elem);
-            }
-            else{
+            } else {
                 odd.push(elem);
             }
-            sum+=Number(elem);
-        }
-        else if (/^[a-zA-Z]$/.test(elem)){
+            sum += Number(elem);
+        } else if (/^[a-zA-Z]$/.test(elem)) {
             alphabets.push(elem);
-        }
-        else{
+        } else {
             special.push(elem);
         }
     }
 
-    for (let i=0; i<alphabets.length; i++){
+    for (let i = 0; i < alphabets.length; i++) {
         upperAlphabets.push(alphabets[i].toUpperCase());
     }
 
-    let concatString="";
-    for (let i=alphabets.length-1; i>=0; i--){
-        let ch=alphabets[i];
-        if ((alphabets.length-1-i)%2===0){
-            concatString+=ch.toUpperCase();
-        }
-        else{
-            concatString+=ch.toLowerCase();
+    let concatString = "";
+    for (let i = alphabets.length - 1; i >= 0; i--) {
+        let ch = alphabets[i];
+        if ((alphabets.length - 1 - i) % 2 === 0) {
+            concatString += ch.toUpperCase();
+        } else {
+            concatString += ch.toLowerCase();
         }
     }
 
@@ -62,6 +63,4 @@ app.post("/api/bfhl", (req, res) => {
         sum,
         concatString
     });
-});
-
-module.exports=app;
+}
