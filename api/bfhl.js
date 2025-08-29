@@ -9,39 +9,44 @@ app.post("/api/bfhl", (req, res) => {
             message: "Input must be an array"
         });
     }
-    const even=[];
-    const odd=[];
-    const upperAlphabets=[];
-    const special=[];
+    let even=[];
+    let odd=[];
+    let alphabets=[];
+    let upperAlphabets=[];
+    let special=[];
     let sum=0;
 
-    for (let elem of input){
-        if (/^-?\d+$/.test(elem)){
-            const num=parseInt(elem, 10);
-            if (num%2==0){
+    for (let i=0; i<input.length; i++){
+        let elem=input[i];
+        if (!isNaN(elem)){
+            if (Number(elem)%2===0){
                 even.push(elem);
             }
             else{
                 odd.push(elem);
             }
-            sum+=num;
+            sum+=Number(elem);
         }
         else if (/^[a-zA-Z]$/.test(elem)){
-            upperAlphabets.push(elem.toUpperCase);
+            alphabets.push(elem);
         }
         else{
             special.push(elem);
         }
     }
 
+    for (let i=0; i<alphabets.length; i++){
+        upperAlphabets.push(alphabets[i].toUpperCase());
+    }
+
     let concatString="";
-    const reversed=upperAlphabets.slice().reverse().join("");
-    for (let i=0; i<reversed.length; i++){
-        if (i%2===0){
-            concatString+=reversed[i].toUpperCase();
+    for (let i=alphabets.length-1; i>=0; i--){
+        let ch=alphabets[i];
+        if ((alphabets.length-1-i)%2===0){
+            concatString+=ch.toUpperCase();
         }
         else{
-            concatString+=reversed[i].toLowerCase();
+            concatString+=ch.toLowerCase();
         }
     }
 
@@ -59,4 +64,4 @@ app.post("/api/bfhl", (req, res) => {
     });
 });
 
-module.exports=app;
+module.exports=router;
